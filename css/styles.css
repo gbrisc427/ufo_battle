@@ -92,12 +92,41 @@ p.lead {
   font-weight: 500;
 }
 
+.txt-home{
+  margin: 2rem;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+/* COLUMNAS */
+
+.two-columns {
+  display: flex;                
+  align-items: center;           
+  justify-content: space-between;
+  gap: 3rem;                     
+  margin: 3rem 0;
+}
+
+.column {
+  flex: 1;
+  vertical-align: middle;                       
+}
 
 /* ENLACES */
 
 a {
   color: #8a2be2;
   text-decoration: none;
+}
+
+.a-play{
+  font-weight: 700;
+  padding: 1rem;
+  font-size: 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  color: rgb(243, 184, 255);
 }
 
 a:hover {
@@ -111,6 +140,7 @@ hr {
 }
 
 /* ANIMACIÓN NEÓN */
+
 @keyframes neonGlow {
   0%, 100% {
     text-shadow: 0 0 5px #8a2be2, 0 0 10px #8a2be2, 0 0 20px #ff00ff;
