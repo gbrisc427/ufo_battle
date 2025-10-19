@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap');
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  background-color: #0c0016; 
+  color: #e0d8ff;           
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  min-height: 100vh;
+}
+
+/* MENÚ */
+
+.navbar {
+  background: linear-gradient(90deg, #1a0033, #3a0066);
+  border-bottom: 2px solid #8a2be2;
+  box-shadow: 0 0 15px #8a2be2aa;
+}
+
+.navbar-brand {
+  font-weight: 800;
+  color: #ff00ff !important;
+  text-shadow: 0 0 8px #ff00ff88;
+}
+
+.nav-link {
+  color: #c9bdf5 !important;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #ffffff !important;
+  text-shadow: 0 0 8px #8a2be2;
+}
+
+/* BOTONES */
+
+.btn {
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #8a2be2, #ff00ff);
+  box-shadow: 0 0 10px #8a2be288;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #ff00ff, #8a2be2);
+  box-shadow: 0 0 20px #ff00ffaa;
+}
+
+.btn-success {
+  background: linear-gradient(90deg, #00ffcc, #009999);
+  color: #0c0016;
+}
+
+.btn-success:hover {
+  box-shadow: 0 0 20px #00ffccaa;
+}
+
+.btn-img{
+  background-color: transparent;
+}
+
+.btn-img:hover{
+  background-color: transparent;
+}
+
+/* TEXTOS Y TÍTULOS */
+
+h1, h2, h3 {
+  color: #ff00ff;
+  text-shadow: 0 0 10px #ff00ff99;
+  margin-bottom: 1rem;
+}
+
+p.lead {
+  color: #a092c4;
+  font-weight: 500;
+}
+
+
+/* ENLACES */
+
+a {
+  color: #8a2be2;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #ff00ff;
+  text-shadow: 0 0 6px #ff00ff66;
+}
+
+hr {
+  border-color: #8a2be2;
+  opacity: 0.5;
+}
+
+/* ANIMACIÓN NEÓN */
+@keyframes neonGlow {
+  0%, 100% {
+    text-shadow: 0 0 5px #8a2be2, 0 0 10px #8a2be2, 0 0 20px #ff00ff;
+  }
+  50% {
+    text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #8a2be2;
+  }
+}
+
+.glow {
+  animation: neonGlow 2s infinite alternate;
+}
