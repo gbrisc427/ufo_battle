@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <title>UFO Battle - Ajustes</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html"> <img src="imgs/logo.png" style="height: 100px; width: auto;"> </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="ajustes.html">Ajustes</a></li>
+          <li class="nav-item"><a class="nav-link" href="play.html">Play</a></li>
+          <li class="nav-item"><a class="nav-link" href="rakings.html">Ranking</a></li>
+        </ul>
+
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="login.html">Login / Register</a></li>
+        </ul>
+      </div>
+    </div>
+    </nav>
+
+    <main class="container mt-5 centrate">
+        <h1 class="text-center mb-4 glow">AJUSTES DEL JUEGO</h1>
+
+        <form id="preferences-form" class="mx-auto">
+        
+        <div class="mb-4">
+            <label for="nUfos" class="form-label">NÚMERO DE UFOS</label>
+            <select id="nUfos" class="form-select">
+            <option value="1">1</option>
+            <option value="5" selected>5</option>
+            <option value="9">9</option>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <label for="time" class="form-label">TIEMPO DE JUEGO (SEGUNDOS)</label>
+            <select id="time" class="form-select">
+            <option value="60" selected>60</option>
+            <option value="120">120</option>
+            <option value="180">180</option>
+            </select>
+        </div>
+
+        <div class="form-check mb-4">
+            <input type="checkbox" id="doubleSpeed" class="form-check-input">
+            <label for="doubleSpeed" class="form-check-label">ACTIVAR DOBLE VELOCIDAD</label>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-success btn-lg">GUARDAR AJUSTES</button>
+        </div>
+        </form>
+    </main>
+    <div id="save-message" class="text-center mt-4" style="display:none;">
+        <p class="ajustes-guardados glow"> AJUSTES GUARDADOS CORRECTAMENTE</p>
+    </div>
+
+  <script src="js/ajustes.js"></script>
+</body>
+</html>
