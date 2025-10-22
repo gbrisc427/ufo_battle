@@ -155,7 +155,7 @@ hr {
 
 /* FORMULARIOS */
 
-main.container {
+main.container-card {
   background: linear-gradient(145deg, #1a0033, #0c0016);
   border: 2px solid #3a0066;
   border-radius: 15px;
@@ -189,6 +189,21 @@ main.container {
 .form-check-label {
   color: #c9bdf5;
   font-weight: 500;
+}
+
+.login-form .form-control {
+  background-color: #120028;
+  border: 1px solid #8a2be2;
+  color: #e6dbff;
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.login-form .form-control:focus {
+  border-color: #ff00ff;
+  box-shadow: 0 0 15px #ff00ff99;
 }
 
 /* ANIMACIÓN NEÓN */
