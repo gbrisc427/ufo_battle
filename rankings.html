@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UFO Battle - Rankings</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/records.js"></script>
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html"> <img src="imgs/logo.png" style="height: 100px; width: auto;"> </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="ajustes.html">Ajustes</a></li>
+          <li class="nav-item"><a class="nav-link" href="play.html">Play</a></li>
+          <li class="nav-item"><a class="nav-link" href="rankings.html">Ranking</a></li>
+        </ul>
+
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="login.html">Login / Register</a></li>
+        </ul>
+      </div>
+    </div>
+    </nav>
+
+  <main class="container mt-5 text-center">
+    <h1 class="glow mb-4">RANKING DE PUNTUACIONES</h1>
+
+    <div class="records-table-container mx-auto">
+      <table class="table table-dark table-striped table-bordered align-middle records-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Jugador</th>
+            <th>Puntuación</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="records-body">
+        </tbody>
+      </table>
+    </div>
+
+
+    <p id="no-records" class="mt-4" style="display:none;">⚠️ No hay puntuaciones registradas todavía.</p>
+  </main>
+
+</body>
+</html>
