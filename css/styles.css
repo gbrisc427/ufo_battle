@@ -16,6 +16,12 @@ html, body {
   min-height: 100vh;
 }
 
+body {
+  height: max-content;
+  width: 100%;
+  position: fixed;
+}
+
 /* MENÚ */
 
 .navbar {
