@@ -212,6 +212,23 @@ main.container-card {
   box-shadow: 0 0 15px #ff00ff99;
 }
 
+.register-form .form-control {
+  background-color: #120028;
+  border: 1px solid #8a2be2;
+  color: #e6dbff;
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.register-form .form-control:focus {
+  border-color: #ff00ff;
+  box-shadow: 0 0 15px #ff00ff99;
+}
+
+
+
 /* RANKINGS */
 
 .records-table-container {
