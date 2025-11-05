@@ -1,139 +1,168 @@
-    var pid_missile, pid_ufo;
-    var score = 0;
-    var themissile, theufo;
 
-    var isMissileInFlight = false; 
-    var ufo_hstep = 5; 
-    var hnav = 220;
+class Missile {
+  constructor(element, game) {
+    this.element = element;
+    this.game = game;
+    this.speed = 10;
+    this.inFlight = false;
+    this.interval = null;
+  }
 
+  move(direction) {
+    if (this.inFlight) return;
 
-    window.onload = function () {
-        themissile = document.getElementById('missile');
-        theufo = document.getElementById('ufo');
-        document.onkeydown = keyboardController;
-        UFOlaunch(); 
-    };
+    const currentLeft = parseInt(this.element.style.left) || 0;
+    const width = parseInt(this.element.style.width) || 0;
+    const step = 15;
+    const rightLimit = window.innerWidth;
 
-
-    function UFOlaunch() {
-        pid_ufo = setInterval(MoveUFO, 25);
+    if (direction === "right" && currentLeft + width + step < rightLimit) {
+      this.element.style.left = currentLeft + step + "px";
+    } else if (direction === "left" && currentLeft - step >= 0) {
+      this.element.style.left = currentLeft - step + "px";
     }
+  }
 
-    function MoveUFO() {
-        var Rlimit = window.innerWidth;
-        var hpos_ufo = parseInt(theufo.style.left);
-        var width_ufo = parseInt(theufo.style.width);
+  fire() {
+    if (this.inFlight) return;
+    this.inFlight = true;
+    this.interval = setInterval(() => this.launch(), 20);
+  }
 
-        if (hpos_ufo + width_ufo + ufo_hstep > Rlimit || hpos_ufo + ufo_hstep < 0) {
-            ufo_hstep *= -1; 
-        }
-        hpos_ufo += ufo_hstep;
-        theufo.style.left = hpos_ufo + 'px';
+  launch() {
+    const uLimit = window.innerHeight - this.game.hnav;
+    const vpos = parseInt(this.element.style.bottom) || 10;
+
+    if (this.game.ufo && this.checkCollision()) {
+      clearInterval(this.interval);
+      this.inFlight = false;
+      this.element.style.bottom = "10px";
+      this.game.updateScore(100);
+      this.game.explodeUFO();
+    } else if (vpos > uLimit) {
+      clearInterval(this.interval);
+      this.inFlight = false;
+      this.element.style.bottom = "10px";
+      this.game.updateScore(-25);
+    } else {
+      this.element.style.bottom = vpos + this.speed + "px";
     }
+  }
 
-    function keyboardController(theEvent) {
-        let code = theEvent.key;
-        switch (code) {
-            case 'ArrowRight':
-                moveMissileRight();
-                break;
-            case 'ArrowLeft':
-                moveMissileLeft();
-                break;
-            case ' ': 
-                pullTrigger();
-                break;
-        }
+  checkCollision() {
+    const rectUFO = this.game.ufo.element.getBoundingClientRect();
+    const rectMissile = this.element.getBoundingClientRect();
+
+    return !(
+      rectUFO.right < rectMissile.left ||
+      rectUFO.left > rectMissile.right ||
+      rectUFO.bottom < rectMissile.top ||
+      rectUFO.top > rectMissile.bottom
+    );
+  }
+}
+
+class UFO {
+  constructor(element, game) {
+    this.element = element;
+    this.game = game;
+    this.speed = 5;
+    this.interval = null;
+    this.direction = 1;
+  }
+
+  start() {
+    this.interval = setInterval(() => this.move(), 25);
+  }
+
+  move() {
+    const rightLimit = window.innerWidth;
+    const pos = parseInt(this.element.style.left) || 0;
+    const width = parseInt(this.element.style.width) || 60;
+
+    if (pos + width + this.speed > rightLimit || pos + this.speed < 0) {
+      this.direction *= -1;
     }
+    this.element.style.left = pos + this.speed * this.direction + "px";
+  }
 
-    function moveMissileRight() {
-        if (isMissileInFlight) return;
+  explode() {
+    clearInterval(this.interval);
+    this.element.src = "imgs/explosion.gif";
 
-        var rLimit = window.innerWidth;
-        var hpos_m = parseInt(themissile.style.left);
-        var misWidth = parseInt(themissile.style.width);
-        var hstep = 15; 
-        if (hpos_m + misWidth < rLimit) {
-            hpos_m += hstep;
-            themissile.style.left = hpos_m + 'px';
-        }
+    setTimeout(() => {
+      this.remove();
+      this.game.spawnUFO();
+    }, 1000);
+  }
+
+  remove() {
+    clearInterval(this.interval);
+    if (this.element.parentNode) {
+      this.element.parentNode.removeChild(this.element);
     }
+  }
+}
 
-    function moveMissileLeft() {
-        if (isMissileInFlight) return;
+class Game {
+  constructor() {
+    this.score = 0;
+    this.hnav = 220; // altura del menú
+    this.container = document.getElementById("container");
+    this.pointsEl = document.getElementById("points");
 
-        var hstep = 15; 
-        var hpos_m = parseInt(themissile.style.left);
-        if (hpos_m > 0) {
-            hpos_m -= hstep;
-            themissile.style.left = hpos_m + 'px';
-        }
+    this.missile = new Missile(document.getElementById("missile"), this);
+    this.ufo = new UFO(document.getElementById("ufo"), this);
+
+    this.initControls();
+    this.ufo.start();
+  }
+
+  initControls() {
+    document.addEventListener("keydown", (e) => this.handleKey(e));
+  }
+
+  handleKey(e) {
+    switch (e.key) {
+      case "ArrowRight":
+        this.missile.move("right");
+        break;
+      case "ArrowLeft":
+        this.missile.move("left");
+        break;
+      case " ":
+        this.missile.fire();
+        break;
     }
+  }
 
-    function pullTrigger() {
-        if (!isMissileInFlight) { 
-            isMissileInFlight = true;
-            pid_missile = setInterval(launch, 20); 
-        }
-    }
-    
-    function checkforaHit() {
-        const rectUFO = theufo.getBoundingClientRect();
-        const rectMissile = themissile.getBoundingClientRect();
+  updateScore(points) {
+    this.score += points;
+    this.pointsEl.textContent = this.score;
+  }
 
-        return !(
-            rectUFO.right < rectMissile.left ||
-            rectUFO.left > rectMissile.right ||
-            rectUFO.bottom < rectMissile.top ||
-            rectUFO.top > rectMissile.bottom
-        );
-    }
+  explodeUFO() {
+    this.ufo.explode();
+  }
 
-    function launch() {
-        var uLimit = window.innerHeight - hnav;
-        var vpos_m = parseInt(themissile.style.bottom);
-        var misHeight = parseInt(themissile.style.height);
-        var vstep = 10; 
+  spawnUFO() {
+    const newUfo = document.createElement("img");
+    const left = parseInt(Math.random() * window.innerWidth);
+    const bottom = parseInt(Math.random() * (window.innerHeight - this.hnav));
 
-        if (checkforaHit()) {
-            clearInterval(pid_missile); 
-            score += 100;
-            document.getElementById('points').innerHTML = score;
+    newUfo.src = "imgs/ufo.png";
+    newUfo.id = "ufo";
+    newUfo.style.position = "absolute";
+    newUfo.style.left = `${left}px`;
+    newUfo.style.bottom = `${bottom}px`;
+    newUfo.style.width = "60px";
+    newUfo.style.height = "60px";
 
-            themissile.style.bottom = '10px'; 
-            isMissileInFlight = false;
+    this.container.appendChild(newUfo);
+    this.ufo = new UFO(newUfo, this);
+    this.ufo.start();
+  }
+}
 
-            theufo.src = 'imgs/explosion.gif';
-            setTimeout(function(){
-                eliminateUfo(), newUfo();
-            }, 1000);
 
-        } else if (vpos_m > uLimit) { 
-            clearInterval(pid_missile);
-            score -= 25;
-            document.getElementById('points').innerHTML = score;
-
-            themissile.style.bottom = '10px'; 
-            isMissileInFlight = false;
-        } else {
-            vpos_m += vstep;
-            themissile.style.bottom = vpos_m + 'px';
-        }
-    }
-
-    function eliminateUfo(){
-        clearInterval(pid_ufo);
-        document.getElementById('container').removeChild(theufo);   
-    }
-
-    function newUfo(){
-        let newUfo = document.createElement('img');
-        let newleft = parseInt(Math.random()* window.innerWidth);
-        let newbottom = parseInt(Math.random()* (window.innerHeight - hnav));
-        newUfo.setAttribute('src', 'imgs/ufo.png');
-        newUfo.setAttribute('id', 'ufo');
-        newUfo.setAttribute('style', 'left:' + newleft + 'px; bottom:' + newbottom + 'px; height: 60px; width: 60px;' );
-        document.getElementById('container').appendChild(newUfo);
-        theufo = document.getElementById('ufo');
-        UFOlaunch();
-    }
+window.onload = () => new Game();

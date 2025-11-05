@@ -1,26 +1,4 @@
 
-//XMLHttpRequest v2
-
-/*
-function dologin(){
-  var http_request = new XMLHttpRequest(),     
-      url = "http://wd.etsisi.upm.es:10000/users/login";
-
-}  
-
-
-function responseProcess(http_request) {
-
-      //We don't need the response
-      document.getElementById('result').innerHTML = jwtToken;
-      }             
-    else
-      alert("There was an ERROR with the URL");
-} 
-
-*/
-
-// fetch version
 
 function dologin(){ 
   let url = "http://wd.etsisi.upm.es:10000/users/login",   
