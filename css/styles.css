@@ -275,6 +275,30 @@ main.container-card {
   letter-spacing: 1px;
 }
 
+/* JUEGO */
+
+ #missile {
+            position: absolute;
+            z-index: 1;
+        }
+        #ufo { 
+            position: absolute; 
+            z-index: 1;
+        }
+        #points {
+            position: absolute;
+            bottom: 10px;
+            right: 30px;
+            width: 150px;
+            height: 50px;
+            background-color: blue;
+            color: white;
+            text-align: center;
+            font-size: 18pt;
+            padding-top: 20px;
+            z-index: 0;
+        }
+
 
 /* ANIMACIÓN NEÓN */
 
