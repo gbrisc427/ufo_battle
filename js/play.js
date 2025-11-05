@@ -1,128 +1,101 @@
 
-class Missile {
-  constructor(element, game) {
-    this.element = element;
-    this.game = game;
-    this.speed = 10;
-    this.inFlight = false;
-    this.interval = null;
+class Game {
+  constructor() {
+    const rawTime = localStorage.getItem("gameTime");
+    console.log(rawTime);
+    console.log(localStorage.getItem("gameTime"));
+    const parsedTime = Number(rawTime);
+    this.totalTime = Number.isFinite(parsedTime) && parsedTime > 0 ? Math.floor(parsedTime) : 60;
+
+    this.numUfos = parseInt(localStorage.getItem("ufoCount")) || 1;
+    this.doubleSpeed = localStorage.getItem("doubleSpeed") === "true";
+
+    this.score = 0;
+    this.timeLeft = this.totalTime;
+    this.hnav = 220;
+    this.active = true;
+    this.timerId = null;
+
+    this.container = document.getElementById("container");
+    this.pointsEl = document.getElementById("points");
+    this.timeEl = document.getElementById("timePlay");
+
+    this.missile = new Missile(document.getElementById("missile"), this);
+    this.ufos = [];
+    this.createUfos(this.numUfos);
+
+    document.onkeydown = (e) => this.keyboardController(e);
+
+    this.startTimer();
   }
 
-  move(direction) {
-    if (this.inFlight) return;
+  createUfos(count) {
+    for (let i = 0; i < count; i++) {
+      const ufoEl = document.createElement("img");
+      ufoEl.src = "imgs/ufo.png";
+      ufoEl.classList.add("ufo");
+      ufoEl.style.position = "absolute";
+      ufoEl.style.width = "60px";
+      ufoEl.style.height = "60px";
+      ufoEl.style.left = Math.random() * (window.innerWidth - 60) + "px";
+      ufoEl.style.bottom = Math.random() * (window.innerHeight - this.hnav - 60) + "px";
+      this.container.appendChild(ufoEl);
 
-    const currentLeft = parseInt(this.element.style.left) || 0;
-    const width = parseInt(this.element.style.width) || 0;
-    const step = 15;
-    const rightLimit = window.innerWidth;
-
-    if (direction === "right" && currentLeft + width + step < rightLimit) {
-      this.element.style.left = currentLeft + step + "px";
-    } else if (direction === "left" && currentLeft - step >= 0) {
-      this.element.style.left = currentLeft - step + "px";
+      const ufo = new UFO(ufoEl, this);
+      if (this.doubleSpeed) ufo.speedMultiplier = 2;
+      ufo.start();
+      this.ufos.push(ufo);
     }
   }
 
-  fire() {
-    if (this.inFlight) return;
-    this.inFlight = true;
-    this.interval = setInterval(() => this.launch(), 20);
-  }
+  startTimer() {
+    if (!Number.isFinite(this.timeLeft) || this.timeLeft <= 0) this.timeLeft = 60;
+    this.updateTimeDisplay();
 
-  launch() {
-    const uLimit = window.innerHeight - this.game.hnav;
-    const vpos = parseInt(this.element.style.bottom) || 10;
+    this.timerId = setInterval(() => {
+      this.timeLeft--;
+      if (!Number.isFinite(this.timeLeft)) this.timeLeft = 0;
+      this.updateTimeDisplay();
 
-    if (this.game.ufo && this.checkCollision()) {
-      clearInterval(this.interval);
-      this.inFlight = false;
-      this.element.style.bottom = "10px";
-      this.game.updateScore(100);
-      this.game.explodeUFO();
-    } else if (vpos > uLimit) {
-      clearInterval(this.interval);
-      this.inFlight = false;
-      this.element.style.bottom = "10px";
-      this.game.updateScore(-25);
-    } else {
-      this.element.style.bottom = vpos + this.speed + "px";
-    }
-  }
-
-  checkCollision() {
-    const rectUFO = this.game.ufo.element.getBoundingClientRect();
-    const rectMissile = this.element.getBoundingClientRect();
-
-    return !(
-      rectUFO.right < rectMissile.left ||
-      rectUFO.left > rectMissile.right ||
-      rectUFO.bottom < rectMissile.top ||
-      rectUFO.top > rectMissile.bottom
-    );
-  }
-}
-
-class UFO {
-  constructor(element, game) {
-    this.element = element;
-    this.game = game;
-    this.speed = 5;
-    this.interval = null;
-    this.direction = 1;
-  }
-
-  start() {
-    this.interval = setInterval(() => this.move(), 25);
-  }
-
-  move() {
-    const rightLimit = window.innerWidth;
-    const pos = parseInt(this.element.style.left) || 0;
-    const width = parseInt(this.element.style.width) || 60;
-
-    if (pos + width + this.speed > rightLimit || pos + this.speed < 0) {
-      this.direction *= -1;
-    }
-    this.element.style.left = pos + this.speed * this.direction + "px";
-  }
-
-  explode() {
-    clearInterval(this.interval);
-    this.element.src = "imgs/explosion.gif";
-
-    setTimeout(() => {
-      this.remove();
-      this.game.spawnUFO();
+      if (this.timeLeft <= 0) {
+        clearInterval(this.timerId);
+        this.endGame();
+      }
     }, 1000);
   }
 
-  remove() {
-    clearInterval(this.interval);
-    if (this.element.parentNode) {
-      this.element.parentNode.removeChild(this.element);
-    }
-  }
-}
-
-class Game {
-  constructor() {
-    this.score = 0;
-    this.hnav = 220; // altura del menú
-    this.container = document.getElementById("container");
-    this.pointsEl = document.getElementById("points");
-
-    this.missile = new Missile(document.getElementById("missile"), this);
-    this.ufo = new UFO(document.getElementById("ufo"), this);
-
-    this.initControls();
-    this.ufo.start();
+  updateTimeDisplay() {
+    this.timeEl.textContent = Number.isFinite(this.timeLeft) ? `${this.timeLeft}s` : "0s";
   }
 
-  initControls() {
-    document.addEventListener("keydown", (e) => this.handleKey(e));
+  endGame() {
+    this.active = false;
+    clearInterval(this.timerId);
+
+    this.ufos.forEach((ufo) => ufo.stop());
+    if (this.missile.interval) clearInterval(this.missile.interval);
+
+    let finalScore = this.calculateFinalScore();
+    this.pointsEl.textContent = finalScore;
+    this.timeEl.textContent = "FIN";
+
+    setTimeout(() => {
+      alert(`⏰ ¡Tiempo agotado!\nPuntuación final: ${finalScore}`);
+    }, 500);
   }
 
-  handleKey(e) {
+  calculateFinalScore() {
+    let finalScore = this.score;
+    const minutes = this.totalTime / 60;
+    if (this.numUfos > 1) finalScore -= (this.numUfos - 1) * 50;
+    if (this.doubleSpeed) finalScore += 250;
+
+    return Math.max(0, Math.round(finalScore));
+  }
+
+
+  keyboardController(e) {
+    if (!this.active) return;
     switch (e.key) {
       case "ArrowRight":
         this.missile.move("right");
@@ -141,28 +114,136 @@ class Game {
     this.pointsEl.textContent = this.score;
   }
 
-  explodeUFO() {
-    this.ufo.explode();
-  }
+  handleUfoHit(ufo) {
+    ufo.element.src = "imgs/explosion.gif";
+    setTimeout(() => {
+      if (this.container.contains(ufo.element)) this.container.removeChild(ufo.element);
+      const idx = this.ufos.indexOf(ufo);
+      if (idx !== -1) this.ufos.splice(idx, 1);
 
-  spawnUFO() {
-    const newUfo = document.createElement("img");
-    const left = parseInt(Math.random() * window.innerWidth);
-    const bottom = parseInt(Math.random() * (window.innerHeight - this.hnav));
+      this.createUfos(1);
+    }, 800);
 
-    newUfo.src = "imgs/ufo.png";
-    newUfo.id = "ufo";
-    newUfo.style.position = "absolute";
-    newUfo.style.left = `${left}px`;
-    newUfo.style.bottom = `${bottom}px`;
-    newUfo.style.width = "60px";
-    newUfo.style.height = "60px";
-
-    this.container.appendChild(newUfo);
-    this.ufo = new UFO(newUfo, this);
-    this.ufo.start();
+    this.updateScore(100);
   }
 }
 
 
-window.onload = () => new Game();
+class UFO {
+  constructor(element, game) {
+    this.element = element;
+    this.game = game;
+    this.interval = null;
+    this.speed = 5;
+    this.speedMultiplier = 1;
+    this.direction = 1;
+  }
+
+  start() {
+    this.interval = setInterval(() => this.move(), 25);
+  }
+
+  move() {
+    if (!this.game.active) return;
+
+    let left = parseInt(this.element.style.left);
+    left += this.speed * this.speedMultiplier * this.direction;
+
+    if (left > window.innerWidth - 60 || left < 0) {
+      this.direction *= -1;
+      left += this.direction * (this.speed * this.speedMultiplier);
+    }
+
+    this.element.style.left = left + "px";
+  }
+
+  stop() {
+    clearInterval(this.interval);
+  }
+}
+
+
+class Missile {
+  constructor(element, game) {
+    this.element = element;
+    this.game = game;
+    this.interval = null;
+    this.inFlight = false;
+    this.speed = 10;
+  }
+
+  move(dir) {
+    if (this.inFlight || !this.game.active) return;
+
+    const step = 15;
+    let left = parseInt(this.element.style.left);
+    const width = parseInt(this.element.style.width);
+    const limit = window.innerWidth;
+
+    if (dir === "right" && left + width < limit) left += step;
+    if (dir === "left" && left > 0) left -= step;
+
+    this.element.style.left = left + "px";
+  }
+
+  fire() {
+    if (this.inFlight || !this.game.active) return;
+    this.inFlight = true;
+    this.interval = setInterval(() => this.launch(), 20);
+  }
+
+  launch() {
+    const uLimit = window.innerHeight - this.game.hnav;
+    let vpos = parseInt(this.element.style.bottom) || 10;
+    const step = this.speed;
+
+    const nextVpos = vpos + step;
+    const increment = Math.max(1, Math.floor(step / 2));
+    let hit = false;
+
+    for (let delta = increment; delta <= step; delta += increment) {
+      const intermediate = vpos + delta;
+      this.element.style.bottom = intermediate + "px";
+
+      if (this.checkCollision()) {
+        hit = true;
+        break;
+      }
+    }
+
+    if (hit) {
+      clearInterval(this.interval);
+      this.inFlight = false;
+      this.element.style.bottom = "10px";
+    } else if (nextVpos > uLimit) {
+      clearInterval(this.interval);
+      this.inFlight = false;
+      this.element.style.bottom = "10px";
+      this.game.updateScore(-25);
+    } else {
+      this.element.style.bottom = nextVpos + "px";
+    }
+  }
+
+  checkCollision() {
+    const rectMissile = this.element.getBoundingClientRect();
+
+    for (const ufo of this.game.ufos) {
+      const rectUfo = ufo.element.getBoundingClientRect();
+      const overlap = !(
+        rectUfo.right < rectMissile.left ||
+        rectUfo.left > rectMissile.right ||
+        rectUfo.bottom < rectMissile.top ||
+        rectUfo.top > rectMissile.bottom
+      );
+
+      if (overlap) {
+        this.game.handleUfoHit(ufo);
+        return true;
+      }
+    }
+    return false;
+  }
+}
+
+window.onload = () => { new Game()};
