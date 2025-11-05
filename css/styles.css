@@ -17,11 +17,17 @@ html, body {
 }
 
 body {
+  position: relative;  
+  min-height: 100vh;
+  overflow: hidden;    
+}
+
+
+.body-home {
   height: max-content;
   width: 100%;
   position: fixed;
 }
-
 /* MENÚ */
 
 .navbar {
@@ -125,6 +131,7 @@ p.lead {
   vertical-align: middle;                       
 }
 
+
 .centrate {
   position: absolute;
   left: 50%;
@@ -132,6 +139,8 @@ p.lead {
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+
 
 /* ENLACES */
 
@@ -212,6 +221,30 @@ main.container-card {
   box-shadow: 0 0 15px #ff00ff99;
 }
 
+.register-container {
+  padding: 3rem 2rem;
+  max-height: 40vh;         
+  overflow-y: auto;         
+  scrollbar-width: thin;
+  scrollbar-color: #8a2be2 #1a0033;
+}
+
+.register-container::-webkit-scrollbar {
+  width: 8px;
+}
+.register-container::-webkit-scrollbar-track {
+  background: #1a0033;
+  border-radius: 8px;
+}
+.register-container::-webkit-scrollbar-thumb {
+  background: #8a2be2;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #ff00ff;
+}
+.register-container::-webkit-scrollbar-thumb:hover {
+  background: #ff00ff;
+}
+
 .register-form .form-control {
   background-color: #120028;
   border: 1px solid #8a2be2;
@@ -277,27 +310,63 @@ main.container-card {
 
 /* JUEGO */
 
+.canva-game {
+  background-image: url('../imgs/fondo_2.png');  
+  background-size: cover;                        
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;                                    
+}
+
+
  #missile {
-            position: absolute;
-            z-index: 1;
-        }
-        #ufo { 
-            position: absolute; 
-            z-index: 1;
-        }
-        #points {
-            position: absolute;
-            bottom: 10px;
-            right: 30px;
-            width: 150px;
-            height: 50px;
-            background-color: blue;
-            color: white;
-            text-align: center;
-            font-size: 18pt;
-            padding-top: 20px;
-            z-index: 0;
-        }
+      position: absolute;
+      z-index: 1;
+  }
+  #ufo { 
+      position: absolute; 
+      z-index: 1;
+  }
+  #points {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ff00ff;                     
+  text-shadow: 
+    0 0 10px #ff00ff, 
+    0 0 20px #8a2be2, 
+    0 0 40px #8a2be2;                
+  background: rgba(20, 0, 40, 0.6);  
+  border: 2px solid #8a2be2;        
+  border-radius: 12px;
+  padding: 0.5rem 1.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  box-shadow: 0 0 20px #8a2be266;
+  display: inline-block;
+  user-select: none;                
+  transition: transform 0.15s ease;
+}
+
+#points.updated {
+  transform: scale(1.2);
+  transition: transform 0.15s ease;
+}
+
+.points-container {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.points-txt {
+  font-size: 1rem;
+  color: #8a2be2;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-shadow: 
+    0 0 5px #8a2be2, 
+    0 0 10px #ff00ff;
+}
 
 
 /* ANIMACIÓN NEÓN */

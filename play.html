@@ -10,8 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="canva-game">
+  <nav id="nav-play" class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="index.html"> <img src="imgs/logo.png" style="height: 100px; width: auto;"> </a>
 
@@ -36,13 +36,16 @@
   </nav> 
 
   <main class="container text-center mt-5">
-    <img id='missile' src='imgs/missile.png' STYLE="left:300px; bottom:10px; height:70px; width:40px" />
-<div id="container">
+    <img id='missile' src='imgs/missile.png' STYLE="left:300px; bottom:10px; height:90px; width:50px" />
+    <div id="container">
     <img id='ufo' src="imgs/ufo.png" STYLE="left:0px; bottom:550px; width:60px; height: 60px;" /> 
-</div>
-<div id='points'>0</div>
-    
+    </div>
+    <div class="points-container glow">
+      <span class="points-txt glow">PUNTOS:</span>
+      <div id="points">0</div>
+    </div>
   </main>
 
 </body>
+<script src="js/play.js"></script>
 </html>

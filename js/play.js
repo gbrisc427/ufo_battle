@@ -4,6 +4,8 @@
 
     var isMissileInFlight = false; 
     var ufo_hstep = 5; 
+    var hnav = 220;
+
 
     window.onload = function () {
         themissile = document.getElementById('missile');
@@ -88,7 +90,7 @@
     }
 
     function launch() {
-        var uLimit = window.innerHeight;
+        var uLimit = window.innerHeight - hnav;
         var vpos_m = parseInt(themissile.style.bottom);
         var misHeight = parseInt(themissile.style.height);
         var vstep = 10; 
@@ -127,13 +129,11 @@
     function newUfo(){
         let newUfo = document.createElement('img');
         let newleft = parseInt(Math.random()* window.innerWidth);
-        let newbottom = parseInt(Math.random()* window.innerHeight);
+        let newbottom = parseInt(Math.random()* (window.innerHeight - hnav));
         newUfo.setAttribute('src', 'imgs/ufo.png');
         newUfo.setAttribute('id', 'ufo');
         newUfo.setAttribute('style', 'left:' + newleft + 'px; bottom:' + newbottom + 'px; height: 60px; width: 60px;' );
         document.getElementById('container').appendChild(newUfo);
         theufo = document.getElementById('ufo');
         UFOlaunch();
-    
-
     }
