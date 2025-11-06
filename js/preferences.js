@@ -45,6 +45,10 @@ class PreferencesManager {
     localStorage.setItem(this.dSpeedKey, this.doubleSpeedInput.value);
 
     this.showMessage("AJUSTES GUARDADOS CORRECTAMENTE", "#ff00ff");
+
+    setTimeout(() => {
+      window.location.href = "../play.html";
+    }, 1000);
   }
 
   showMessage(text, color) {

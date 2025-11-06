@@ -42,7 +42,6 @@ class Game {
       this.container.appendChild(ufoEl);
 
       const ufo = new UFO(ufoEl, this);
-      if (this.doubleSpeed) ufo.speedMultiplier = 2;
       ufo.start();
       this.ufos.push(ufo);
     }
@@ -82,6 +81,7 @@ class Game {
     setTimeout(() => {
       alert(`⏰ ¡Tiempo agotado!\nPuntuación final: ${finalScore}`);
     }, 500);
+    
   }
 
   calculateFinalScore() {
