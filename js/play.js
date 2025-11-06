@@ -64,7 +64,7 @@ class Game {
   }
 
   updateTimeDisplay() {
-    this.timeEl.textContent = Number.isFinite(this.timeLeft) ? `${this.timeLeft}s` : "0s";
+    this.timeEl.textContent = Number.isFinite(this.timeLeft) ? `${this.timeLeft}(s)` : "0(s)";
   }
 
   endGame() {

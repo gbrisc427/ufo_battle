@@ -263,7 +263,7 @@ main.container-card {
 /* RANKINGS */
 
 .records-table-container {
-  max-width: 1000px;
+  max-width: 900px;
   background: linear-gradient(145deg, #1a0033, #0c0016);
   box-shadow: 0 0 30px #3a006688;
 }
