@@ -38,20 +38,20 @@ class Login {
             .then((responseMessage)=>{
                 if (responseMessage.ok) {
 
-                    console.log(responseMessage);
-
                     const token = responseMessage.headers.get("Authorization");
-            
-                    localStorage.setItem("authToken", token);
 
-                    this.showMessage(`Sesión iniciada con éxito`, "success");
-                    
-                    setTimeout(() => {
-                        window.location.href = "index.html";
-                        }, 1200);
-                    
+                    if(token){
+
+                        localStorage.setItem("authToken", token);
+                        this.showMessage(`Sesión iniciada con éxito`, "success");
+                        
+                        setTimeout(() => {
+                            window.location.href = "index.html";
+                            }, 1200);
+                    }else{
+                        this.showMessage("Login Error", "error");
+                    }
             
-    
                 } else {
                     this.showMessage("Usuario o contraseña incorrectos", "error");
                     this.usernameInput.value = "";
