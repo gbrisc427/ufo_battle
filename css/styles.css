@@ -263,12 +263,9 @@ main.container-card {
 /* RANKINGS */
 
 .records-table-container {
-  max-width: 700px;
+  max-width: 1000px;
   background: linear-gradient(145deg, #1a0033, #0c0016);
-  border: 2px solid #3a0066;
-  border-radius: 15px;
   box-shadow: 0 0 30px #3a006688;
-  padding: 2rem;
 }
 
 .records-table {
@@ -300,6 +297,31 @@ main.container-card {
   background-color: rgba(255, 0, 255, 0.1);
   transition: background-color 0.3s ease;
 }
+
+.records-table-container {
+  padding: 3rem 2rem;
+  max-height: 60vh;         
+  overflow-y: auto;         
+  scrollbar-width: thin;
+  scrollbar-color: #8a2be2 #1a0033;
+}
+
+.records-table-container::-webkit-scrollbar {
+  width: 8px;
+}
+.records-table-container::-webkit-scrollbar-track {
+  background: #1a0033;
+  border-radius: 8px;
+}
+.records-table-container::-webkit-scrollbar-thumb {
+  background: #8a2be2;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #ff00ff;
+}
+.records-table-container::-webkit-scrollbar-thumb:hover {
+  background: #ff00ff;
+}
+
 
 #no-records {
   color: #c9bdf5;
