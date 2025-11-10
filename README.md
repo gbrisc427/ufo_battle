@@ -21,33 +21,6 @@ El objetivo es derribar naves enemigas (UFOs) disparando misiles, obteniendo la 
 
 ---
 
-## 🗂️ Estructura del proyecto
-ufo_battle/
-│
-├── index.html # Página principal (menú)
-├── login.html # Inicio de sesión
-├── register.html # Registro de usuario
-├── preferences.html # Configuración de partida
-├── play.html # Pantalla de juego
-├── rankings.html # Clasificación (top 10)
-│
-├── css/
-│ └── style.css # Estilos globales (tema oscuro, neón)
-│
-├── js/
-│ ├── play.js # Lógica del juego (POO)
-│ ├── preferences.js # Gestión de ajustes
-│ ├── login.js # Autenticación de usuario
-│ ├── register.js # Registro de usuarios
-│ └── rankings.js # Consulta y renderizado del ranking
-│
-├── imgs/
-│ ├── ufo.png # Imagen del ovni
-│ ├── explosion.gif # Efecto de explosión
-│ └── otros recursos...
-│
-└── README.md
-
 ## 👨‍💻 Autor
 
 Gabriel Serrano
