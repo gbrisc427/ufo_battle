@@ -85,17 +85,30 @@ class Game {
     this.pointsEl.textContent = finalScore;
     this.timeEl.textContent = "FIN";
 
-    setTimeout(() => {
-      alert(`⏰ ¡Tiempo agotado!\nPuntuación final: ${finalScore}`);
-    }, 500);
+    const panel = document.getElementById("endPanel");
+    const scoreValue = document.getElementById("finalScoreValue");
+    const returnBtn = document.getElementById("returnMenuBtn");
+
+    if (panel && scoreValue) {
+      scoreValue.textContent = finalScore;
+      panel.classList.remove("hidden");
+
+      if (returnBtn) {
+        returnBtn.onclick = () => {
+          window.location.href = "index.html";
+        };
+      }
+    }
   }
+
+
 
   calculateFinalScore() {
     let finalScore = this.score;
     const minutes = this.totalTime / 60;
     finalScore = finalScore / minutes;
 
-    if (this.numUfos > 1) finalScore -= (this.numUfos - 1) * 50;
+    if (this.numUfos > 1) finalScore -= (this.numUfos-1) * 50;
     if (this.doubleSpeed) finalScore += 250;
 
     return Math.max(0, Math.round(finalScore));
