@@ -9,7 +9,7 @@ class PreferencesManager {
 
     this.ufoNKey = "ufo_num";
     this.timeKey = "gameTime";
-    this.dSpeedKey = "doubleSpeed"
+    this.dSpeedKey = "doubleSpeedK"
 
     this.init();
   }
@@ -30,22 +30,16 @@ class PreferencesManager {
     this.nUfosInput.value = nUfos;
     this.timeInput.value = gameTime;
     this.doubleSpeedInput.checked = doubleSpeed;
+  
   }
 
-  savePreferences() {
-    const prefs = {
-      nUfos: parseInt(this.nUfosInput.value),
-      time: parseInt(this.timeInput.value),
-      doubleSpeed: this.doubleSpeedInput.checked,
-    };
-
-    
+  savePreferences() {    
     localStorage.setItem(this.ufoNKey, this.nUfosInput.value);
     localStorage.setItem(this.timeKey, this.timeInput.value);
-    localStorage.setItem(this.dSpeedKey, this.doubleSpeedInput.value);
+    localStorage.setItem(this.dSpeedKey, this.doubleSpeedInput.checked);
 
     this.showMessage("AJUSTES GUARDADOS CORRECTAMENTE", "#ff00ff");
-
+    
     setTimeout(() => {
       window.location.href = "../play.html";
     }, 1000);
